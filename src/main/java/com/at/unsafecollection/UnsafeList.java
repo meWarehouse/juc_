@@ -33,7 +33,36 @@ public class UnsafeList {
             }, String.valueOf(i)).start();
         }
 
+/*
 
+● 加锁
+● 使用System.arraycopy复制集合中的元素到一个新的集合中并将新集合容量+1
+● 将新元素添加到新集合末尾
+● 将索引指向新的集合
+● 释放锁
+
+public boolean add(E e) {
+    final ReentrantLock lock = this.lock; // 加锁
+    lock.lock();
+    try {
+        Object[] elements = getArray();
+        int len = elements.length;
+        Object[] newElements = Arrays.copyOf(elements, len + 1); // 扩容
+        newElements[len] = e; // 添加元素
+        setArray(newElements); // 指向新的集合
+        return true;
+    } finally {
+        lock.unlock(); // 释放锁
+    }
+}
+
+final Object[] getArray() {return array;}
+
+private transient volatile Object[] array;
+
+final void setArray(Object[] a) {array = a;}
+
+*/
 
     }
 
