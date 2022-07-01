@@ -1,6 +1,7 @@
 package com.at.unsafecollection;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @create 2022-07-01
@@ -23,7 +24,14 @@ public class UnsafeList {
 
          */
 
+        CopyOnWriteArrayList<String> cowList = new CopyOnWriteArrayList<>();
 
+        for (int i = 0; i < 5000; i++) {
+            new Thread(() -> {
+                cowList.add(UUID.randomUUID().toString());
+                System.out.println(cowList);
+            }, String.valueOf(i)).start();
+        }
 
 
 
