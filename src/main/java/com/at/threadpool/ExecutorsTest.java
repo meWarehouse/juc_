@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * @create 2022-07-02
  */
-public class ThreadPoolTest {
+public class ExecutorsTest {
 
     public static void main(String[] args) {
 
