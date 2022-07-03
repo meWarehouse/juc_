@@ -26,6 +26,7 @@ public class CfAPI {
 
         // 计算结果存在依赖关系，这两个线程串行化
         // 由于存在依赖关系(当前步错，不走下一步)，当前步骤有异常的话就叫停。
+/*
         CompletableFuture<Integer> future = CompletableFuture
                 .supplyAsync(() -> {
                     try {
@@ -55,6 +56,33 @@ public class CfAPI {
                     e.printStackTrace();
                     return -1;
                 });
+
+*/
+
+        CompletableFuture
+                .supplyAsync(() -> {
+                    try { TimeUnit.SECONDS.sleep(2); } catch (InterruptedException e) { e.printStackTrace(); }
+                    System.out.println("step 1");
+                    return 1;
+                })
+                .handle((f,e) -> {
+                    System.out.println("step 2");
+                    return f + 2;
+                })
+                .handle((f,e) -> {
+                    System.out.println("step 3");
+                    return f + 3;
+                })
+                .whenCompleteAsync((r, e) -> {
+                    if (e == null) System.out.println("result：" + r);
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return -1;
+                });
+
+
+
 
         // 阻塞获取结果
         try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
