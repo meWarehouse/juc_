@@ -35,6 +35,10 @@ public class CfAPI {
                     return 1;
                 })
                 .thenApply(f -> {
+
+                    // 出现异常后面全中断
+                    int i = 10 / 0;
+
                     System.out.println("step 2");
                     return f + 2;
                 })
