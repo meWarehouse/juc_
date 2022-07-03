@@ -30,11 +30,19 @@ public class CfStaticMethod {
 
         System.out.println("... thread name：" + Thread.currentThread().getName());
 
+        // 没有指定Executor的方法，直接使用默认的ForkJoinPool.commonPool() 作为它的线程池执行异步代码。
         CompletableFuture<Void> runAsync = CompletableFuture
                 .runAsync(() -> {
                     try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
                     System.out.println(Thread.currentThread().getName() + "runAsync ... runAsync");
-                }, poolExecutor);
+                });
+
+        //如果指定线程池，则使用我们自定义的或者特别指定的线程池执行异步代码
+//        CompletableFuture<Void> runAsync = CompletableFuture
+//                .runAsync(() -> {
+//                    try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
+//                    System.out.println(Thread.currentThread().getName() + "runAsync ... runAsync");
+//                },poolExecutor);
 
         System.out.println("runAsync.get()：" + runAsync.get());
 
