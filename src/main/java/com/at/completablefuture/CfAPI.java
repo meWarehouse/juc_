@@ -1,9 +1,8 @@
 package com.at.completablefuture;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import javax.sql.rowset.Joinable;
+import javax.swing.plaf.SliderUI;
+import java.util.concurrent.*;
 
 /**
  * @create 2022-07-03
@@ -17,10 +16,50 @@ public class CfAPI {
 
 //        m2();
 
-        m3();
+//        m3();
+
+        m4();
+
+    }
+
+
+    /**
+     * 对计算速度进行选用
+     *  applyToEither 谁算的快选谁
+     */
+    public static void m4(){
+
+        System.out.println(
+                CompletableFuture
+                    .supplyAsync(() -> {
+                        try {
+                            TimeUnit.SECONDS.sleep(3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return 1;
+                    })
+                    .applyToEither(
+                            CompletableFuture.supplyAsync(() -> {
+                                try {
+                                    TimeUnit.SECONDS.sleep(1);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                return 2;
+                            }),
+                            r -> {
+                                return r;
+                            }
+                    )
+                    .join()
+        );
+
+        try { TimeUnit.SECONDS.sleep(4); } catch (InterruptedException e) { e.printStackTrace(); }
 
 
     }
+
 
 
     /**
