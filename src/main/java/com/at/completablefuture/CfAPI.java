@@ -49,10 +49,12 @@ public class CfAPI {
 
         // join 与 get 功能一样
         // join 没有 ExecutionException, InterruptedException 异常抛出，而 get 有
-//        System.out.println(future.join());
+        System.out.println(future.join());
 
 
 
+
+        //主动触发计算
 
         // 不暂停  --> true	-44
         // 暂停5秒线程，异步线程能够计算完成返回get   --> false	1
