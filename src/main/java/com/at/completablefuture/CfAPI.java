@@ -61,6 +61,7 @@ public class CfAPI {
         try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
 
         //调用CompletableFuture.get()被阻塞的时候,complete方法就是结束阻塞并get()获取设置的complete里面的值.
+        // complete(T value) 返回值 是否打断get方法立即返回括号值
         System.out.println(future.complete(-44)+"\t"+future.get());
 
 
