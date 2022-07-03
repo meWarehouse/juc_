@@ -1,5 +1,6 @@
 package com.at.completablefuture;
 
+import java.sql.Connection;
 import java.util.concurrent.*;
 
 
@@ -13,8 +14,9 @@ public class CfStaticMethod {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        runAsync();
+//        runAsync();
 
+        supplyAsync();
 
         System.out.println("main thread running...");
 
@@ -28,13 +30,30 @@ public class CfStaticMethod {
 
         System.out.println("... thread name：" + Thread.currentThread().getName());
 
-        CompletableFuture<Void> future = CompletableFuture
+        CompletableFuture<Void> runAsync = CompletableFuture
                 .runAsync(() -> {
                     try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
-                    System.out.println(Thread.currentThread().getName() + "runAsync ... future");
+                    System.out.println(Thread.currentThread().getName() + "runAsync ... runAsync");
                 }, poolExecutor);
 
-        System.out.println("future.get()：" + future.get());
+        System.out.println("runAsync.get()：" + runAsync.get());
+
+
+    }
+
+    // supplyAsync 有 返回值
+    // public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier)
+    // public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier,Executor executor)
+    public static void supplyAsync() throws ExecutionException, InterruptedException {
+
+        System.out.println("... thread name：" + Thread.currentThread().getName());
+
+        CompletableFuture<Integer> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread().getName() + "runAsync ... supplyAsync");
+            return 1;
+        }, poolExecutor);
+
+        System.out.println("supplyAsync.get()："+ supplyAsync.get());
 
 
     }
