@@ -16,13 +16,13 @@ public class CfAPI {
 //        m1();
 
         m2();
-        try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
-        System.out.println("main thread running...");
 
     }
 
 
     public static void m2() {
+
+        System.out.println(Thread.currentThread().getName() + " ...............");
 
         CompletableFuture<Integer> future = CompletableFuture
                 .supplyAsync(() -> {
@@ -53,6 +53,11 @@ public class CfAPI {
                     e.printStackTrace();
                     return -1;
                 });
+
+        // 阻塞获取结果
+        try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        System.out.println(Thread.currentThread().getName() + " running ...............");
 
 
     }
