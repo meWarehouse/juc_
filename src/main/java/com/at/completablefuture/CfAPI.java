@@ -24,6 +24,8 @@ public class CfAPI {
 
         System.out.println(Thread.currentThread().getName() + " ...............");
 
+        // 计算结果存在依赖关系，这两个线程串行化
+        // 由于存在依赖关系(当前步错，不走下一步)，当前步骤有异常的话就叫停。
         CompletableFuture<Integer> future = CompletableFuture
                 .supplyAsync(() -> {
                     try {
