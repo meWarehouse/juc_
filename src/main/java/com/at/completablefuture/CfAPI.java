@@ -20,6 +20,13 @@ public class CfAPI {
     }
 
 
+    /**
+     * 对计算结果进行处理
+     *
+     *  supplyAsync 出现异常后面全中断
+     *  handle 有异常也可以往下一步走，根据带的异常参数可以进一步处理
+     *
+     */
     public static void m2() {
 
         System.out.println(Thread.currentThread().getName() + " ...............");
