@@ -1,5 +1,7 @@
 package com.at.completablefuture;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import javax.sql.rowset.Joinable;
 import javax.swing.plaf.SliderUI;
 import java.util.concurrent.*;
@@ -18,7 +20,29 @@ public class CfAPI {
 
 //        m3();
 
-        m4();
+//        m4();
+
+        m5();
+
+    }
+
+    /**
+     * 对计算结果进行合并
+     * thenCombine
+     */
+    public static void m5(){
+
+        System.out.println(CompletableFuture
+                .supplyAsync(() -> {
+                    try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
+                    return 10;
+                })
+                .thenCombine(
+                        CompletableFuture.supplyAsync(() -> "20"),
+                        (r1, r2) -> {
+                            return r1 + r2;
+                        }
+                ).join());
 
     }
 
