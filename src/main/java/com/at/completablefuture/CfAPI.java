@@ -59,6 +59,9 @@ public class CfAPI {
 
 */
 
+
+        //当一个线程依赖另一个线程时用 handle 方法来把这两个线程串行化,
+        // 异常情况：有异常也可以往下一步走，根据带的异常参数可以进一步处理
         CompletableFuture
                 .supplyAsync(() -> {
                     try { TimeUnit.SECONDS.sleep(2); } catch (InterruptedException e) { e.printStackTrace(); }
@@ -66,12 +69,24 @@ public class CfAPI {
                     return 1;
                 })
                 .handle((f,e) -> {
+
+                    // 有异常也可以往下一步走，根据带的异常参数可以进一步处理
+                    int i = 10 / 0;
+
                     System.out.println("step 2");
                     return f + 2;
                 })
                 .handle((f,e) -> {
+
                     System.out.println("step 3");
+
+                    if(e != null)  return 3;
+
                     return f + 3;
+                })
+                .handle((f,e) -> {
+                    System.out.println("step 4");
+                    return f + 4;
                 })
                 .whenCompleteAsync((r, e) -> {
                     if (e == null) System.out.println("result：" + r);
