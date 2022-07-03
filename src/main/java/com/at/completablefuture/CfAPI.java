@@ -15,9 +15,46 @@ public class CfAPI {
 
 //        m1();
 
-        m2();
+//        m2();
+
+        m3();
+
 
     }
+
+
+    /**
+     *  对计算结果进行消费
+     *  thenRun       无需上一步结果，无返回值
+     *  thenAccept    需要上一步结果，无返回值
+     *  thenApply     需要上一步结果，有返回值
+     *
+     */
+    public static void m3(){
+
+        CompletableFuture
+                .supplyAsync(() -> {
+                    return 1;
+                })
+                .thenApply(f -> {
+                    return f + 2;
+                })
+                .thenAccept(r -> System.out.println(r));
+
+
+        //任务 A 执行完执行 B，并且 B 不需要 A 的结果
+        System.out.println(CompletableFuture.supplyAsync(() -> 1).thenRun(() -> System.out.println("thenRun 不需要前面执行的结果")).join());
+
+        //任务 A 执行完执行 B，B 需要 A 的结果，但是任务 B 无返回值
+        System.out.println(CompletableFuture.supplyAsync(() -> 1).thenAccept(r -> System.out.println("thenAccept 需要上一步的结果 ： " + (r + 1))).join());
+
+        //任务 A 执行完执行 B，B 需要 A 的结果，同时任务 B 有返回值
+        System.out.println(CompletableFuture.supplyAsync(() -> "resA").thenApply(r -> r + "resB").join());
+
+
+
+    }
+
 
 
     /**
