@@ -20,6 +20,7 @@ public class Lock8Demo {
     public static void main(String[] args) {
 
         Phone phone = new Phone();
+        Phone phone1 = new Phone();
 
         new Thread(() -> {
             phone.sendEmail();
@@ -31,7 +32,9 @@ public class Lock8Demo {
         new Thread(() -> {
 //            phone.sendSMS();
 
-            phone.hello();
+//            phone.hello();
+
+            phone1.sendSMS();
 
         },"B").start();
 
