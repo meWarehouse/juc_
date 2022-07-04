@@ -29,7 +29,10 @@ public class Lock8Demo {
         try { TimeUnit.MILLISECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
 
         new Thread(() -> {
-            phone.sendSMS();
+//            phone.sendSMS();
+
+            phone.hello();
+
         },"B").start();
 
 
@@ -48,5 +51,12 @@ class Phone {
     public synchronized void sendSMS() {
         System.out.println("sendSMS ...");
     }
+
+    public void hello()
+    {
+        System.out.println("-------hello");
+    }
+
+
 
 }
