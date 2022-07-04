@@ -1,4 +1,4 @@
-package com.at.basethread;
+package com.at.locks;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -62,6 +62,5 @@ class Ticket {
             lock.unlock();
         }
     }
-
 
 }
