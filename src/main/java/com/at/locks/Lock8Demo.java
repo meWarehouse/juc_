@@ -30,11 +30,11 @@ public class Lock8Demo {
         try { TimeUnit.MILLISECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
 
         new Thread(() -> {
-//            phone.sendSMS();
+            phone.sendSMS();
 
 //            phone.hello();
 
-            phone1.sendSMS();
+//            phone1.sendSMS();
 
         },"B").start();
 
@@ -46,12 +46,12 @@ public class Lock8Demo {
 
 class Phone {
 
-    public synchronized void sendEmail() {
+    public static synchronized void sendEmail() {
         try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
         System.out.println("sendEmail ...");
     }
 
-    public synchronized void sendSMS() {
+    public static synchronized void sendSMS() {
         System.out.println("sendSMS ...");
     }
 
