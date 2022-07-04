@@ -1,5 +1,8 @@
 package com.at.basethread;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @create 2022-07-04
  */
@@ -14,9 +17,10 @@ public class SaleTickets {
             new Thread(() -> {
                 for (int j = 0; j < 30; j++) {
 //                    ticket.sale();
-                    ticket.saleSync();
+//                    ticket.saleSync();
+                    ticket.saleLock();
                 }
-            },String.valueOf(i)).start();
+            }, String.valueOf(i)).start();
 
         }
 
@@ -25,27 +29,39 @@ public class SaleTickets {
 
 }
 
-class Ticket{
+class Ticket {
 
     private int tickets = 30;
 
     private Object object = new Object();
 
+    private Lock lock = new ReentrantLock();
 
-    public void sale(){
-        if(tickets > 0){
+
+    public void sale() {
+        if (tickets > 0) {
             System.out.println(Thread.currentThread().getName() + "\t 卖出第" + (tickets--) + "张票，还剩： " + tickets);
         }
     }
 
-    public void saleSync(){
-        synchronized (object){
-            if(tickets > 0){
+    public void saleSync() {
+        synchronized (object) {
+            if (tickets > 0) {
                 System.out.println(Thread.currentThread().getName() + "\t 卖出第" + (tickets--) + "张票，还剩： " + tickets);
             }
         }
     }
 
+    public void saleLock() {
+        lock.lock();
+        try {
+            if (tickets > 0) {
+                System.out.println(Thread.currentThread().getName() + "\t 卖出第" + (tickets--) + "张票，还剩： " + tickets);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
 
 
 }
