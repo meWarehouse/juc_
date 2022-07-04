@@ -13,7 +13,8 @@ public class SaleTickets {
 
             new Thread(() -> {
                 for (int j = 0; j < 30; j++) {
-                    ticket.sale();
+//                    ticket.sale();
+                    ticket.saleSync();
                 }
             },String.valueOf(i)).start();
 
@@ -28,12 +29,23 @@ class Ticket{
 
     private int tickets = 30;
 
+    private Object object = new Object();
+
 
     public void sale(){
         if(tickets > 0){
             System.out.println(Thread.currentThread().getName() + "\t 卖出第" + (tickets--) + "张票，还剩： " + tickets);
         }
     }
+
+    public void saleSync(){
+        synchronized (object){
+            if(tickets > 0){
+                System.out.println(Thread.currentThread().getName() + "\t 卖出第" + (tickets--) + "张票，还剩： " + tickets);
+            }
+        }
+    }
+
 
 
 }
