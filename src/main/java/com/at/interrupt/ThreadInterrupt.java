@@ -11,7 +11,7 @@ public class ThreadInterrupt {
     private static volatile boolean isStop = false;
 
 
-    public static void main(String[] args) {
+    public static void m1(String[] args) {
 
         new Thread(() -> {
 
