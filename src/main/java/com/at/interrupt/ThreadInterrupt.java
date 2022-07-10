@@ -15,6 +15,42 @@ public class ThreadInterrupt {
 
 
     /**
+     * 通过Thread类自带的中断api方法实现
+     *      中断了 是不是线程就立即stop ?????
+     */
+    public static void m3(String[] args) {
+
+        Thread A = new Thread(() -> {
+
+            while (true){
+                if(Thread.currentThread().isInterrupted()){
+                    System.out.println(String.format("... %s 线程被中断",Thread.currentThread().getName()));
+                    break;
+                }
+                System.out.println(Thread.currentThread().getName() + " 线程 running...");
+            }
+
+        }, "A");
+
+        A.start();
+
+        try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        new Thread(() -> {
+
+            A.interrupt();
+            System.out.println("线程 A 已中断");
+
+        },"B").start();
+
+        System.out.println("main thread running.....");
+
+
+    }
+
+
+
+    /**
      * AtomicBoolean 原子引用
      */
     public static void m2(String[] args) {
