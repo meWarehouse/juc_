@@ -13,8 +13,26 @@ public class ThreadInterrupt {
 
     private static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
-
     public static void main(String[] args) {
+
+        System.out.println(Thread.currentThread().getName() + " --- " + Thread.interrupted());
+        System.out.println(Thread.currentThread().getName() + " --- " + Thread.interrupted());
+
+
+        System.out.println("running Main 111...");
+        Thread.currentThread().interrupt(); // 将标志位设置为 true
+        System.out.println("running Main 222...");
+
+
+        // Thread.interrupted() 返回当前线程的中断状态  将当前线程的中断状态设为false
+
+        System.out.println(Thread.currentThread().getName() + " --- " + Thread.interrupted());
+        System.out.println(Thread.currentThread().getName() + " --- " + Thread.interrupted());
+
+    }
+
+
+    public static void m5(String[] args) {
 
         Thread A = new Thread(() -> {
 
