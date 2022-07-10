@@ -10,6 +10,7 @@ public class SyncBytecode {
     public void syncCodeBlock(){
         synchronized (object){
             System.out.println("... 同步代码块 ...");
+            throw new RuntimeException("...exception");
         }
     }
 
