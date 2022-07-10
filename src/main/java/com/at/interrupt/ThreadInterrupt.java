@@ -15,6 +15,41 @@ public class ThreadInterrupt {
 
 
     /**
+     * 中断为true后，并不是立刻stop程序
+     */
+    public static void m4(String[] args) {
+
+        Thread A = new Thread(() -> {
+
+            for (int i = 0; i < 500; i++) {
+                System.out.println(Thread.currentThread().getName() + " -> " + i);
+            }
+
+            System.out.println("A.interrupt()调用之后 -- 0： " + Thread.currentThread().isInterrupted());
+
+        }, "A");
+
+        A.start();
+
+        System.out.println("A.interrupt() 调用之前，A 线程的中断默认值：" + A.isInterrupted());
+
+
+        try { TimeUnit.MILLISECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        A.interrupt();
+        System.out.println("A.interrupt() 调用之后，A线程的中断标识：" + A.isInterrupted());
+
+
+        try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
+
+
+        //非活动状态,A线程不在执行中，已经结束执行了。
+        System.out.println("A.interrupt() 调用之后" + A.isInterrupted());
+
+    }
+
+
+    /**
      * 通过Thread类自带的中断api方法实现
      *      中断了 是不是线程就立即stop ?????
      */
