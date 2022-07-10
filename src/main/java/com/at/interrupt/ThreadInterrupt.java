@@ -14,6 +14,62 @@ public class ThreadInterrupt {
     private static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
 
+    public static void main(String[] args) {
+
+        Thread A = new Thread(() -> {
+
+            while (true){
+
+                if(Thread.currentThread().isInterrupted()){
+
+                    System.out.println(Thread.currentThread().getName() + " 线程被中断....");
+                    break;
+
+                }
+
+//                java.lang.InterruptedException: sleep interrupted
+//                at java.lang.Thread.sleep(Native Method)
+//                at java.lang.Thread.sleep(Thread.java:340)
+//                at java.util.concurrent.TimeUnit.sleep(TimeUnit.java:386)
+//                at com.at.interrupt.ThreadInterrupt.lambda$main$0(ThreadInterrupt.java:30)
+//                at java.lang.Thread.run(Thread.java:748)
+                /**
+                 * sleep方法抛出InterruptedException后，中断标识也被清空置为false，
+                 * 在catch没有通过调用th.interrupt（）方法再次将中断标识置为true，
+                 * 这就导致死限环了
+                 */
+                try {
+                    TimeUnit.MILLISECONDS.sleep(3);
+                } catch (InterruptedException e) {
+
+
+                    Thread.currentThread().interrupt(); // 解决办法
+
+                    e.printStackTrace();
+                }
+
+
+                System.out.println(Thread.currentThread().getName() + " running....");
+
+            }
+
+        }, "A");
+
+
+        A.start();
+
+        try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        new Thread(() -> {
+            A.interrupt();
+        }).start();
+
+
+
+    }
+
+
+
     /**
      * 中断为true后，并不是立刻stop程序
      */
