@@ -55,6 +55,12 @@ public class ThreadInterrupt {
                  * sleep方法抛出InterruptedException后，中断标识也被清空置为false，
                  * 在catch没有通过调用th.interrupt（）方法再次将中断标识置为true，
                  * 这就导致死限环了
+                 *
+                 * If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int)
+                 * methods of the Object class, or of the join(), join(long), join(long, int),
+                 * sleep(long), or sleep(long, int), methods of this class,
+                 * then its interrupt status will be cleared and it will receive an InterruptedException.
+                 *
                  */
                 try {
                     TimeUnit.MILLISECONDS.sleep(3);
@@ -124,7 +130,7 @@ public class ThreadInterrupt {
 
 
     /**
-     * 通过Thread类自带的中断api方法实现
+     * 通过Thread类自带的中断api方法实现 isInterrupted()  interrupt()
      *      中断了 是不是线程就立即stop ?????
      */
     public static void m3(String[] args) {
