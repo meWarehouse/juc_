@@ -71,8 +71,6 @@ public class ObjectWaitNotify {
             }
         }, "D").start();
 
-
-
     }
 
 
@@ -89,7 +87,7 @@ class Resource {
 
         // 判断
 //        if (shareResource != 0) {
-            // 等待
+        // 等待
 
 /*
 Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object.
@@ -112,7 +110,7 @@ See the notify method for a description of the ways in which a thread can become
 //        }
 
 
-        while (shareResource != 0){
+        while (shareResource != 0) {
 
             this.wait();
 
@@ -138,14 +136,14 @@ See the notify method for a description of the ways in which a thread can become
 //            wait();
 //        }
 
-        while (shareResource != 1){
+        while (shareResource != 1) {
 
             this.wait();
 
         }
 
         // 干活
-        shareResource --;
+        shareResource--;
 
         System.out.println(Thread.currentThread().getName() + " -> " + shareResource);
 
