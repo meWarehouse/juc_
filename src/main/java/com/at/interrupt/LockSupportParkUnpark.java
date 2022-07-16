@@ -7,7 +7,7 @@ import java.util.concurrent.locks.LockSupport;
 /**
  * @create 2022-07-16
  */
-public class LockSupportDemo {
+public class LockSupportParkUnpark {
 
     public static void main(String[] args) {
 
