@@ -3,6 +3,7 @@ package com.at.interrupt;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -165,12 +166,65 @@ public class ObjectConditionLockSupport {
 
     }
 
+    public static void m3(){
+
+        Thread A = new Thread(() -> {
+
+            // 先唤醒
+            try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
+            // ok
+
+            System.out.println(Thread.currentThread().getName() + " come in...");
+
+            LockSupport.park();
+
+            // 多个 park
+            LockSupport.park();
+            LockSupport.park();
+            LockSupport.park();
+            /*
+                park 要与 unpark 一一对应
+
+                park 可一比 unpark 少 但不能多
+
+                一个锅可以有多个锅盖
+                哟个锅盖只能盖一个锅
+
+             */
+
+
+            System.out.println(Thread.currentThread().getName() + " 被唤醒");
+
+
+        }, "A");
+
+        A.start();
+
+//        try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        new Thread(() -> {
+
+
+            LockSupport.unpark(A);
+
+            // 多个 unpark ok
+            LockSupport.unpark(A);
+            LockSupport.unpark(A);
+
+            System.out.println(Thread.currentThread().getName() + " 发出唤醒通知");
+
+        },"B").start();
+
+
+    }
 
     public static void main(String[] args) {
 
 //        m1();
 
-        m2();
+//        m2();
+
+        m3();
 
     }
 
