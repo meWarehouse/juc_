@@ -13,11 +13,22 @@ public class ObjectConditionLockSupport {
      * synchronized
      *  wait
      *  notify
+     *
+     *  尝试先唤醒 ？？？？
+     *  先wait后notify才OK
+     *
 
      */
     public static void m1() {
 
         new Thread(() -> {
+
+            //尝试先唤醒
+            try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
+            /*
+                先 notify 在 wait
+                程序卡死，无法唤醒
+             */
 
             synchronized (object) {
 
