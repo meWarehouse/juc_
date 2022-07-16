@@ -95,7 +95,7 @@ public class ObjectConditionLockSupport {
         new Thread(() -> {
 
             //先 唤醒
-            try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+//            try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
 
             /*
                 程序无法运行
@@ -103,7 +103,28 @@ public class ObjectConditionLockSupport {
              */
 
 
-            lock.lock();
+            // 注释 lock
+//            lock.lock();
+            /*
+
+                condition.await();和condition.signal();都触发了IllegalMonitorStateException异常
+                原因：调用condition中线程等待和唤醒的方法的前提是，要在lock和unlock方法中,要有锁才能调用
+
+                A come in...
+                Exception in thread "A" Exception in thread "B" java.lang.IllegalMonitorStateException
+                    at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.signal(AbstractQueuedSynchronizer.java:1939)
+                    at com.at.interrupt.ObjectConditionLockSupport.lambda$m2$3(ObjectConditionLockSupport.java:132)
+                    at java.lang.Thread.run(Thread.java:748)
+                java.lang.IllegalMonitorStateException
+                    at java.util.concurrent.locks.ReentrantLock$Sync.tryRelease(ReentrantLock.java:151)
+                    at java.util.concurrent.locks.AbstractQueuedSynchronizer.release(AbstractQueuedSynchronizer.java:1261)
+                    at java.util.concurrent.locks.AbstractQueuedSynchronizer.fullyRelease(AbstractQueuedSynchronizer.java:1723)
+                    at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2036)
+                    at com.at.interrupt.ObjectConditionLockSupport.lambda$m2$2(ObjectConditionLockSupport.java:112)
+                    at java.lang.Thread.run(Thread.java:748)
+
+             */
+
 
             try {
 
@@ -116,7 +137,7 @@ public class ObjectConditionLockSupport {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                lock.unlock();
+//                lock.unlock();
             }
 
         },"A").start();
@@ -125,7 +146,7 @@ public class ObjectConditionLockSupport {
 
         new Thread(() -> {
 
-            lock.lock();
+//            lock.lock();
 
             try {
 
@@ -134,7 +155,7 @@ public class ObjectConditionLockSupport {
                 System.out.println(Thread.currentThread().getName() + " 发出唤醒通知");
 
             }finally {
-                lock.unlock();
+//                lock.unlock();
             }
 
         },"B").start();
