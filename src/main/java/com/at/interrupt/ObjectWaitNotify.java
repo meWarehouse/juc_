@@ -18,6 +18,8 @@ public class ObjectWaitNotify {
 
  判断    干活   通知
 
+虚假唤醒 用 while
+
 
  */
 
@@ -49,6 +51,27 @@ public class ObjectWaitNotify {
         // 两个 线程交替操作没有问题
 
 
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    resource.inc();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "C").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+                    resource.desc();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "D").start();
+
+
 
     }
 
@@ -65,18 +88,43 @@ class Resource {
     public synchronized void inc() throws InterruptedException {
 
         // 判断
-        if (shareResource != 0) {
+//        if (shareResource != 0) {
             // 等待
-            wait();
+
+/*
+Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object.
+ In other words, this method behaves exactly as if it simply performs the call wait(0).
+The current thread must own this object's monitor. The thread releases ownership of this monitor and waits until another
+thread notifies threads waiting on this object's monitor to wake up either through a call to the notify method or the notifyAll method.
+The thread then waits until it can re-obtain ownership of the monitor and resumes execution.
+As in the one argument version, interrupts and spurious wakeups are possible, and this method should always be used in a loop:
+           synchronized (obj) {
+               while (<condition does not hold>)
+                   obj.wait();
+               ... // Perform action appropriate to condition
+           }
+
+This method should only be called by a thread that is the owner of this object's monitor.
+See the notify method for a description of the ways in which a thread can become the owner of a monitor.
+*/
+
+//            wait();
+//        }
+
+
+        while (shareResource != 0){
+
+            this.wait();
+
         }
 
         // 干活
-        shareResource += 1;
+        shareResource++;
 
         System.out.println(Thread.currentThread().getName() + " -> " + shareResource);
 
         //通知
-        notifyAll();
+        this.notifyAll();
 
     }
 
@@ -84,20 +132,26 @@ class Resource {
     // -1
     public synchronized void desc() throws InterruptedException {
 
-        //判断
-        if (shareResource != 1) {
-            // 等待
-            wait();
+//        //判断
+//        if (shareResource != 1) {
+//            // 等待
+//            wait();
+//        }
+
+        while (shareResource != 1){
+
+            this.wait();
+
         }
 
         // 干活
-        shareResource -= 1;
+        shareResource --;
 
         System.out.println(Thread.currentThread().getName() + " -> " + shareResource);
 
 
         //通知
-        notifyAll();
+        this.notifyAll();
 
     }
 
