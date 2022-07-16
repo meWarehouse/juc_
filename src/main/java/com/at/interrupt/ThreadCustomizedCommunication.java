@@ -2,6 +2,7 @@ package com.at.interrupt;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -24,35 +25,137 @@ public class ThreadCustomizedCommunication {
      */
 
 
+
     public static void main(String[] args) {
 
+//
+//        ConditionShareResource resource = new ConditionShareResource();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print5();
+//            }
+//
+//        }, "A").start();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print10();
+//            }
+//
+//        }, "B").start();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print15();
+//            }
+//
+//        }, "C").start();
+//
+//        LockSupportShareResource resource = new LockSupportShareResource();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print5();
+//            }
+//
+//        }, "A").start();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print10();
+//            }
+//
+//        }, "B").start();
+//
+//        new Thread(() -> {
+//
+//            for (int i = 0; i < 5; i++) {
+//                resource.print15();
+//            }
+//
+//        }, "C").start();
+//
+//        String name = Thread.currentThread().getName();
 
-        ConditionShareResource resource = new ConditionShareResource();
+    }
 
-        new Thread(() -> {
 
-            for (int i = 0; i < 5; i++) {
-                resource.print5();
+}
+
+class LockSupportShareResource{
+
+    private volatile int flag = 1;
+
+    public void print5(){
+
+        try {
+
+            while (flag != 1){
+                LockSupport.park();
             }
 
-        }, "A").start();
-
-        new Thread(() -> {
-
             for (int i = 0; i < 5; i++) {
-                resource.print10();
+                System.out.println(Thread.currentThread().getName() + "\t" + (i + 1));
             }
 
-        }, "B").start();
+            flag = 2;
+//            LockSupport.unpark(name);
 
-        new Thread(() -> {
 
-            for (int i = 0; i < 5; i++) {
-                resource.print15();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void print10(){
+
+        try {
+
+            while (flag != 2){
+                LockSupport.park();
             }
 
-        }, "C").start();
+            for (int i = 0; i < 10; i++) {
+                System.out.println(Thread.currentThread().getName() + "\t" + (i + 1));
+            }
 
+            flag = 3;
+//            LockSupport.unpark(name);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void print15(){
+
+        try {
+
+            while (flag != 3){
+                LockSupport.park();
+            }
+
+            for (int i = 0; i < 15; i++) {
+                System.out.println(Thread.currentThread().getName() + "\t" + (i + 1));
+            }
+
+            flag = 1;
+//            LockSupport.unpark(name);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -107,7 +210,6 @@ class ConditionShareResource {
 //        }
 //
 //    }
-
 
 
     public void print5() {
