@@ -1,6 +1,9 @@
 package com.at.interrupt;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @create 2022-07-16
@@ -8,6 +11,10 @@ import java.util.concurrent.TimeUnit;
 public class ObjectConditionLockSupport {
 
     static Object object = new Object();
+
+    static Lock lock = new ReentrantLock();
+    static Condition condition = lock.newCondition();
+
 
     /**
      * synchronized
@@ -83,10 +90,57 @@ public class ObjectConditionLockSupport {
 
     }
 
+    public static void m2(){
+
+        new Thread(() -> {
+
+            lock.lock();
+
+            try {
+
+                System.out.println(Thread.currentThread().getName() + " come in...");
+
+                condition.await();
+
+                System.out.println(Thread.currentThread().getName() + " 被唤醒");
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+
+        },"A").start();
+
+        try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        new Thread(() -> {
+
+            lock.lock();
+
+            try {
+
+                condition.signal();
+
+                System.out.println(Thread.currentThread().getName() + " 发出唤醒通知");
+
+            }finally {
+                lock.unlock();
+            }
+
+        },"B").start();
+
+
+
+
+    }
+
 
     public static void main(String[] args) {
 
-        m1();
+//        m1();
+
+        m2();
 
     }
 
