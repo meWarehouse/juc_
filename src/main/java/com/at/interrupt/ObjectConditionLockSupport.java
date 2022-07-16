@@ -94,6 +94,15 @@ public class ObjectConditionLockSupport {
 
         new Thread(() -> {
 
+            //先 唤醒
+            try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+            /*
+                程序无法运行
+                先await()后signal才OK，否则线程无法被唤醒
+             */
+
+
             lock.lock();
 
             try {
@@ -112,7 +121,7 @@ public class ObjectConditionLockSupport {
 
         },"A").start();
 
-        try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
 
         new Thread(() -> {
 
