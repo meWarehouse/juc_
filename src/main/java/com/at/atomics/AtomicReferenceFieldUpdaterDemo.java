@@ -8,7 +8,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 public class AtomicReferenceFieldUpdaterDemo {
 
-    //多线程并发调用一个类的初始化方法，如果未被初始化过，将执行初始化工作，要求只能初始化一次
+    // AtomicReferenceFieldUpdater 多线程并发调用一个类的初始化方法，如果未被初始化过，将执行初始化工作，要求只能初始化一次
+
 
     public static void main(String[] args) {
 
@@ -17,7 +18,6 @@ public class AtomicReferenceFieldUpdaterDemo {
         for (int i = 0; i < 5; i++) {
 
             new Thread(() -> {
-                var.init(var);
             },String.valueOf(i)).start();
 
         }
