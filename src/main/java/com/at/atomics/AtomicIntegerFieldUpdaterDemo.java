@@ -8,6 +8,19 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
  */
 public class AtomicIntegerFieldUpdaterDemo {
 
+    /*
+        AtomicXxxFieldUpdater  以一种线程安全的方式操作非线程安全对象内的某些字段
+
+        AtomicIntegerFieldUpdater  原子更新对象中int类型字段的值
+        AtomicLongFieldUpdater      原子更新对象中Long类型字段的值
+
+        1 更新的对象属性必须使用 public volatile 修饰符
+        2 因为对象的属性修改类型原子类都是抽象类，所以每次使用都必须使用静态方法newUpdater()创建一个更新器，并且需要设置想要更新的类和属性
+
+
+     */
+
+
     public static void main(String[] args) throws InterruptedException {
 
 
