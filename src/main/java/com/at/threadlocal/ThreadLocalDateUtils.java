@@ -1,5 +1,6 @@
 package com.at.threadlocal;
 
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +23,15 @@ public class ThreadLocalDateUtils {
     public static Date parse(String str) throws ParseException {
         return sdf.parse(str);
     }
+
+
+    // ThreadLocal可以确保每个线程都可以得到各自单独的一个SimpleDateFormat的对象，那么自然也就不存在竞争问题了
+    public static final ThreadLocal<SimpleDateFormat> tl_sdf = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+    public static Date parseTL(String str) throws ParseException {
+        return tl_sdf.get().parse(str);
+    }
+
 
     public static void main(String[] args) {
 
@@ -137,21 +147,35 @@ Mon Jul 11 11:11:11 GMT+08:00 199168991
 //        }
 
 
+//        for (int i = 0; i < 10; i++) {
+//            new Thread(() -> {
+//                try {
+//
+//                    // 解决方法1：不使用全局静态变量,为每个线程创建创建一个 SimpleDateFormat 对象
+//
+//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    System.out.println(simpleDateFormat.parse("2021-11-11 11:11:11"));
+//
+//                    simpleDateFormat = null; // help GC
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//            },String.valueOf(i)).start();
+//        }
+
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 try {
 
-                    // 解决方法1：不使用全局静态变量,为每个线程创建创建一个 SimpleDateFormat 对象
-
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println(simpleDateFormat.parse("2021-11-11 11:11:11"));
-
-                    simpleDateFormat = null; // help GC
+                    System.out.println(parseTL("2021-11-11 11:11:11"));
 
                 } catch (ParseException e) {
                     e.printStackTrace();
+                }finally {
+                    tl_sdf.remove();
                 }
-            },String.valueOf(i)).start();
+            }, String.valueOf(i)).start();
         }
 
 
