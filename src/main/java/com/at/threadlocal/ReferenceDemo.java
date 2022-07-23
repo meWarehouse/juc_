@@ -10,6 +10,20 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReferenceDemo {
 
+
+    /*
+
+当内存不足，JVM开始垃圾回收，对于强引用的对象，就算是出现了OOM也不会对该对象进行回收，死都不收
+
+软引用是一种相对强引用弱化了一些的引用，需要用java.lang.ref.SoftReference类来实现， 当系统内存充足时它 不会被回收，不足时它 会 被回收
+
+弱引用需要用java.lang.ref.WeakReference类来实现，它比软引用的生存期更短，只要垃圾回收机制一运行，不管JVM的内存空间是否足够，都会回收该对象占用的内存
+
+虚引用需要java.lang.ref.PhantomReference类来实现，如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收
+
+
+     */
+
     public static void main(String[] args)
     {
         ReferenceQueue<MyObject> referenceQueue = new ReferenceQueue<>();
