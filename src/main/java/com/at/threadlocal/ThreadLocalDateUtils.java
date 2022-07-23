@@ -3,7 +3,10 @@ package com.at.threadlocal;
 import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @create 2022-07-23
@@ -31,6 +34,23 @@ public class ThreadLocalDateUtils {
     public static Date parseTL(String str) throws ParseException {
         return tl_sdf.get().parse(str);
     }
+
+
+    // DateTimeFormatter 代替 SimpleDateFormat
+    // 如果是 JDK8 的应用，可以使用 Instant 代替 Date，LocalDateTime 代替 Calendar，
+    //    DateTimeFormatter 代替 SimpleDateFormat，官方给出的解释：simple beautiful strong immutable
+    //    thread-safe。
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+    public static LocalDateTime parseDTF(String str){
+        return LocalDateTime.parse(str,DATE_TIME_FORMATTER);
+    }
+
+    public static String formatDTF(LocalDateTime localDateTime){
+        return DATE_TIME_FORMATTER.format(localDateTime);
+    }
+
+
 
 
     public static void main(String[] args) {
@@ -164,20 +184,34 @@ Mon Jul 11 11:11:11 GMT+08:00 199168991
 //            },String.valueOf(i)).start();
 //        }
 
+//        for (int i = 0; i < 10; i++) {
+//            new Thread(() -> {
+//                try {
+//
+//                    System.out.println(parseTL("2021-11-11 11:11:11"));
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }finally {
+//                    tl_sdf.remove();
+//                }
+//            }, String.valueOf(i)).start();
+//        }
+
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 try {
 
-                    System.out.println(parseTL("2021-11-11 11:11:11"));
+                    System.out.println(parseDTF("2021-11-11 11:11:11"));
+                    System.out.println(formatDTF(LocalDateTime.now()));
 
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
                     tl_sdf.remove();
                 }
             }, String.valueOf(i)).start();
         }
-
 
     }
 
