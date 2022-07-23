@@ -126,10 +126,28 @@ Mon Jul 11 11:11:11 GMT+08:00 178958991
 Mon Jul 11 11:11:11 GMT+08:00 199168991
 
          */
+//        for (int i = 0; i < 10; i++) {
+//            new Thread(() -> {
+//                try {
+//                    System.out.println(parse("2021-11-11 11:11:11"));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//            },String.valueOf(i)).start();
+//        }
+
+
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 try {
-                    System.out.println(parse("2021-11-11 11:11:11"));
+
+                    // 解决方法1：不使用全局静态变量,为每个线程创建创建一个 SimpleDateFormat 对象
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    System.out.println(simpleDateFormat.parse("2021-11-11 11:11:11"));
+
+                    simpleDateFormat = null; // help GC
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
