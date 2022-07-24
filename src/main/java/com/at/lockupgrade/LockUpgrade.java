@@ -8,6 +8,36 @@ import org.openjdk.jol.info.ClassLayout;
 public class LockUpgrade {
 
 
+    public static void lightLock(String[] args) {
+
+        // -XX:-UseBiasedLocking
+
+        Object o = new Object();
+
+        new Thread(() -> {
+
+            synchronized (o){
+                System.out.println(ClassLayout.parseInstance(o).toPrintable());
+            }
+
+        },"A").start();
+
+        /*
+java.lang.Object object internals:
+ OFFSET  SIZE   TYPE DESCRIPTION                               VALUE
+      0     4        (object header)                           d0 f0 36 30 (11010000 11110000 00110110 00110000) (808906960)
+      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)
+      8     4        (object header)                           e5 01 00 f8 (11100101 00000001 00000000 11111000) (-134217243)
+     12     4        (loss due to the next object alignment)
+Instance size: 16 bytes
+Space losses: 0 bytes internal + 4 bytes external = 4 bytes total
+
+         */
+
+    }
+
+
+
     public static void biasedLock(String[] args) {
 
 
