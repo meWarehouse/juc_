@@ -8,6 +8,23 @@ import org.openjdk.jol.info.ClassLayout;
 public class LockUpgrade {
 
 
+    public static void main(String[] args) {
+
+        Object o = new Object();
+
+        for (int i = 0; i < 10; i++) {
+
+            new Thread(() -> {
+                synchronized (o){
+                    System.out.println(ClassLayout.parseInstance(o).toPrintable());
+                }
+            },String.valueOf(i)).start();
+
+        }
+
+    }
+
+
     public static void lightLock(String[] args) {
 
         // -XX:-UseBiasedLocking
