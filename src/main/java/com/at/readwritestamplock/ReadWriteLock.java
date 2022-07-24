@@ -1,6 +1,5 @@
-package com.at.readwritelock;
+package com.at.readwritestamplock;
 
-import java.lang.annotation.ElementType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

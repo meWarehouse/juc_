@@ -1,4 +1,4 @@
-package com.at.readwritelock;
+package com.at.readwritestamplock;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
