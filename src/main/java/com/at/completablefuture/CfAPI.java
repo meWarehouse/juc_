@@ -1,9 +1,6 @@
 package com.at.completablefuture;
 
-import com.sun.org.apache.regexp.internal.RE;
 
-import javax.sql.rowset.Joinable;
-import javax.swing.plaf.SliderUI;
 import java.util.concurrent.*;
 
 /**
